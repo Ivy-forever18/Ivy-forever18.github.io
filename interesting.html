@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ripple Effect on Custom Image</title>
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevent scrolling */
+             /* Replace with your image path */
+            background-size: cover; /* Cover the entire viewport */
+            position: relative;
+        }
+        .ripple-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Prevent interaction */
+        }
+    </style>
+</head>
+<body>
+
+<div class="ripple-effect"></div>
+
+<script>
+    const rippleContainer = document.querySelector('.ripple-effect');
+
+    window.addEventListener('mousemove', function(e) {
+        box(e.clientX, e.clientY);
+    });
+
+    function box(left, top) {
+        // 初始化样式
+        var ripple = document.createElement("div");
+        ripple.style.width = '5px';
+        ripple.style.height = '5px';
+        ripple.style.borderRadius = '50%';
+        ripple.style.border = 'rgb(94, 168, 252) 1px solid';
+        ripple.style.position = 'absolute';
+        ripple.style.top = top - 2.5 + 'px'; // Center the ripple
+        ripple.style.left = left - 2.5 + 'px';
+        ripple.style.opacity = 0.6; // Initial opacity
+
+        // 向 ripple-container 添加元素
+        rippleContainer.appendChild(ripple);
+
+        // 创建定时器，使波纹一圈圈放大并降低透明度
+        var timer = setInterval(function() {
+            ripple.style.opacity = ripple.style.opacity - 0.05;
+            ripple.style.width = parseInt(ripple.style.width) + 8 + 'px';
+            ripple.style.height = parseInt(ripple.style.height) + 8 + 'px';
+            ripple.style.left = parseInt(ripple.style.left) - 4 + 'px';
+            ripple.style.top = parseInt(ripple.style.top) - 4 + 'px';
+
+            if (ripple.style.opacity <= 0) {
+                clearInterval(timer);
+                ripple.parentNode.removeChild(ripple);
+            }
+        }, 50);
+    }
+</script>
+
+</body>
+</html>
